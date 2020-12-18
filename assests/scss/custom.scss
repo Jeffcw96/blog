@@ -1,0 +1,16 @@
+/* Place your custom SCSS in HUGO_SITE_FOLDER/assets/scss/custom.scss */
+.toggleShow{
+    display:block !important;
+}
+    
+.toggle-code{
+    color:#0077B8;
+    cursor:pointer !important;
+}
+
+.end-line{
+    min-height: 2px;
+    width: 100%;
+    background: #F5F3E6;
+    margin: 30px 0;
+}
