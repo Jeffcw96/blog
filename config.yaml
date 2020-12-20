@@ -71,6 +71,8 @@ params:
             local: false
             src:
 
+    ga_analytics: UA-149516787-1
+
 menu:
     main:
         - identifier: home
@@ -97,10 +99,23 @@ menu:
           weight: -60
           pre: search
 
+    social:
+        - identifier: github
+          name: github
+          url: https://github.com/Jeffcw96
+          weight: -100
+          pre: github
+
+        - identifier: linkedin
+          name: linkedin
+          url: https://www.linkedin.com/in/jeff-chang-7461b119a/
+          weight: -90
+          pre: linkedin
+
         - identifier: instagram
           name: instagram
-          url: https://www.google.com
-          weight: -60
+          url: https://www.instagram.com/jeffcw17/
+          weight: -80
           pre: instagram
 
 related:
