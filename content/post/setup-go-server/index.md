@@ -51,4 +51,4 @@ Finally, we can start and serve our server.
 
 {{% endLine %}}
 
-<div class="fb-comments" data-href="https://jeffdevslife.com/p/setup-go-server/" data-numposts="5"  ></div>
+<div class="fb-comments" data-href="https://jeffdevslife.com/p/build-your-backend-server-with-golang/" data-numposts="5"  ></div>

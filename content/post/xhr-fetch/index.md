@@ -105,7 +105,7 @@ As we can see, **Fetch API** is much more easier and user friendly. However, the
 As a developer, there are some tools you need to know in our browser's developer tool.
 This case we would like to introduce the **Network** tab to see the request and response information such as status code, request payload and etc in our built-in browser.
 
-I also used **Go** to serve my static file in localhost for this testing purpose. [Create a backend server with GOLANG](https://jeffdevslife.com/p/setup-go-server) 
+I also used **Go** to serve my static file in localhost for this testing purpose. [Create a backend server with GOLANG](https://jeffdevslife.com/p/build-your-backend-server-with-golang) 
 
 First and foremost, We may open the the developer tool by going to *Setting* > *More Tools* > *Developer tools*. **OR** we can simply click **F12** as a shortcut key to enter the developer tools.
 
@@ -126,5 +126,5 @@ The response data/ information also can be found in the response tab .
 
 {{% endLine %}}
 
-<div class="fb-comments" data-href="https://jeffdevslife.com/p/xhr-fetch/" data-numposts="5"  ></div>
+<div class="fb-comments" data-href="https://jeffdevslife.com/p/xmlhttprequest-vs-fetch-api/" data-numposts="5"  ></div>
 

@@ -16,7 +16,7 @@ image = "cover.jpg"
 ### Prerequisites:
 
 * Before everything started. Please make sure you have installed [GO and set as your environment variable.](https://golang.org/doc/install).
-* It would be better if you already understand how to [create a simple web server with GO](/p/setup-go-server).
+* It would be better if you already understand how to [create a simple web server with GO](/p/build-your-backend-server-with-golang).
 
 We will be covered 4 common HTTP methods in our REST API as well as the testing tool for testing each endpoints
 * [Postman](#postman)

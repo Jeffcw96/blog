@@ -18,7 +18,7 @@ It will be useful for store multiple data that come from an object such as Custo
 Because Redis isn't like some of the SQL or NO-SQL languages that will auto generate ID when we create the instance or model.
 As a result, it's important to plan and think of the redis structure before we move on to construct them so that later on we can easily access and get the desired data.
 
-In this article, we will be import and use few default package from Golang and Github for [go-redis](https://github.com/go-redis/redis). If you are not sure how to install **Redis Server** in Window. Make sure you checkout my [previous blog to install redis](/p/setup-redis)
+In this article, we will be import and use few default package from Golang and Github for [go-redis](https://github.com/go-redis/redis). If you are not sure how to install **Redis Server** in Window. Make sure you checkout my [previous blog to install redis](/p/setup-redis-on-window/)
 {{< highlight go >}}
 import (
 	"github.com/go-redis/redis"

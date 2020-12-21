@@ -13,7 +13,7 @@ metakeywords = "Javascript, Golang, JSON, Fetch API, Destructure JSON"
 image = "cover.jpg"
 +++
 
-In this article, we will be passing json data from browser to our backend server. We will then use GO to handle the data that send from front end. There are few things that you might interested to know before you start following this tutorial which is send data via [Fetch API](/p/xhr-fetch/) and [Backend Server with Golang](/p/setup-go-server/).
+In this article, we will be passing json data from browser to our backend server. We will then use GO to handle the data that send from front end. There are few things that you might interested to know before you start following this tutorial which is send data via [Fetch API](/p/xmlhttprequest-vs-fetch-api/) and [Backend Server with Golang](/p/build-your-backend-server-with-golang/).
 
 I also use back and modified the [previous layout](/p/password-detector/) for this example and serve in **127.0.0.1/5500**. Each input field id have been listed down in the picture below so that we can easily follow up with the code later. This is how it currently looks like.
 

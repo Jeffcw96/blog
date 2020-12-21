@@ -1,4 +1,4 @@
-baseurl: http://localhost:1313
+baseurl: https://jeffdevslife.com
 languageCode: en-us
 theme: hugo-theme-stack
 paginate: 8
@@ -27,7 +27,7 @@ params:
 
     sidebar:
         emoji: 💻
-        subtitle: I enjot what I learn and I share it🌟
+        subtitle: I enjoy what I learn and I share it🌟
         avatar:
             local: true
             src: img/avatar.png
