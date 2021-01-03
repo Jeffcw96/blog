@@ -1,14 +1,15 @@
 +++
 author = "Jeff Chang"
 title = "useEffect Hook"
-date = "2020-12-27"
-description = "useEffect is very useful especially when we wanted to execute blocks of code after the component has rendered. By default, effects run after every completed render, but you can also define to fire them only when certain values have changed which is good for the optimization."
+date = "2021-01-03"
+description = "useEffect is very useful especially when we wanted to execute blocks of code after the component has rendered. By default, effects run after every completed render, but we can also define to fire them only when certain values have changed which is good for the optimization."
 tags = [
     "react"
 ]
 categories = [
     "React","Javascript"
 ]
+image = "cover.jpg"
 +++
 
 ## Declaration
@@ -21,7 +22,7 @@ categories = [
 {{< /highlight >}}
 
 ## Conditions to call useEffect Hook
-As we mentioned earlier, we can difine to fire the code inside the useEffect Hook based on certain values changed. <br/>
+As we mentioned earlier, we can define to fire the code inside the useEffect Hook based on certain values changed. <br/>
 We will be using back the previous example code which basically incrementing and decrementing the value by using [useState Hooks](/p/usestate-hook/). 
 
 {{< highlight react >}}
@@ -59,7 +60,7 @@ export default App;
 As you can see we didn't add any condition in the useEffect hooks. Meaning to say the code `console.log("useEffects run")` will be called everytime the React render the component. *(State changed)*
 
 ### Fire Effects after certian state changed.
-useEffect hook takes in an array paremeter <small><strong>More Than One</small></strong> for firing the code everytime the paremeters updated.
+useEffect hook takes in an array paremeter for firing the code everytime when the paremeter updated.
 {{< highlight react >}}
   useEffect(() => {
     console.log("useEffects run");
