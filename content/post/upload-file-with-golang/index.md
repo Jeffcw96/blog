@@ -82,7 +82,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		if err == io.EOF {
 			break
 		}
-        //Get File Name attribute
+        	//Get File Name attribute
 		fileName = part.FileName()
 
 		//Open the file, Create file if it's not existing

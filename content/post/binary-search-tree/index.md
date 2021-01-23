@@ -91,7 +91,7 @@ And the output will be like:
 
 <div style="max-width:40%; margin:0 auto">
 
-![BST GIF](bst_animation.gif)
+<img src="bst_animation.gif" alt="BST GIF">
 
 </div>
 
