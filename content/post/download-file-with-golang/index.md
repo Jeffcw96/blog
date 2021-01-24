@@ -2,13 +2,14 @@
 author = "Jeff Chang"
 title = "Download File with Go"
 date = "2021-01-23"
-description = "In this article, we wil be going through http download file with Golang and Javascript"
+description = "In this article, we wil be demonstrate how to perform a http download file with Golang and Javascript"
 tags = [
     "javascript", "go"
 ]
 categories = [
 	"Javascript", "GO"
 ]
+image="cover.jpg"
 +++
 Before we get started, please ensure you already understand the [basic of REST API in GO](/p/rest-api-with-go/) <br/>
 Let's see the final result of this tutorial
@@ -29,7 +30,7 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tempBuffer := make([]byte, 512) //Create a byte form to read the file later
+	tempBuffer := make([]byte, 512) //Create a byte array to read the file later
 	Openfile.Read(tempBuffer) //Read the file into  byte
 	FileContentType := http.DetectContentType(tempBuffer) //Get file header
 

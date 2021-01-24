@@ -92,7 +92,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for {
-			//Create and read the file into temparory buffer
+			//Create and read the file into temparory byte array
 			buffer := make([]byte, 100000)
 			cBytes, err := part.Read(buffer)
 
@@ -101,7 +101,7 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 
-			//Write into the file from buffer
+			//Write into the file from byte array
 			dst.Write(buffer[0:cBytes])
 		}
 		defer dst.Close()
@@ -119,6 +119,6 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 3. Read the part of the file inside an infinity loop. Break if it has reached End Of File (EOF).
 4. We first create and open the file as a empty file according to the path we declared in **point 1**.
     * *Meaning to say it just having the same filename without any data/ information from the actual file*
-5. Then we create a temporary buffer and keep reading the file data in a infinity for loop.
-6. Meanwhile, we then write the data from temporary buffer into the file we just created and openned from **point 4**
+5. Then we create a temporary byte array and keep reading the file data in a infinity for loop.
+6. Meanwhile, we then write the data from temporary byte array into the file we just created and openned from **point 4**
 7. Break the for loop once it has successfully read and write the file in our server.
