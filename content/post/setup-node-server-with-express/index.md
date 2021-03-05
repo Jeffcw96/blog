@@ -22,7 +22,9 @@ image = "cover.jpg"
 * Kindly add a new script command as `"server": "nodemon <your main js file>"` and create a new javascript file according to the value of `main:` property. In my case will be `server.js`
 
 Then you should see your package.json file look something like this.
-<img src="packageJson.png" alt="package.json file" style="max-width:700px; display:block"/>
+<div>
+<img src="packageJson.jpg" alt="package.json file" />
+</div>
 
 ## Setup and listen to server <a name="server"></a>
 To create a node server with express framework is quite straight forward.
