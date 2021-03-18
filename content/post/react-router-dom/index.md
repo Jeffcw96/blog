@@ -12,7 +12,7 @@ categories = [
 image = "cover1.jpg"
 +++
 
-There are few sections we are going to introduce in this article:
+In this article, we are going to :
 * [Setup React Router Dom](#setup)
 * [Explanation of BrowserRouter, Switch, Route, Link](#explanation)
 * [Define our own router](#customization)
