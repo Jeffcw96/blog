@@ -112,12 +112,6 @@ menu:
           weight: -90
           pre: linkedin
 
-        - identifier: instagram
-          name: instagram
-          url: https://www.instagram.com/jeffcw17/
-          weight: -80
-          pre: instagram
-
 related:
     includeNewer: true
     threshold: 60
