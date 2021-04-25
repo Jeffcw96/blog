@@ -7,7 +7,7 @@ tags = [
     "nodejs", "javascript"
 ]
 categories = [
-	"Node Js", "Javascript"
+	"NodeJs", "Javascript"
 ]
 image = "cover.jpg"
 +++

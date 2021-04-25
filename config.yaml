@@ -28,6 +28,7 @@ params:
     sidebar:
         emoji: 💻
         subtitle: I enjoy what I learn and I share it🌟
+        secondSubtitle: ❝Life is best filled by learning as much as you can❞
         avatar:
             local: true
             src: img/avatar.png
