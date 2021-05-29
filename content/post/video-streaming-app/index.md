@@ -10,9 +10,8 @@ categories = [
 	"NodeJs", "Javascript"
 ]
 +++
-If you not sure how stream and buffer works. Make sure you checkout my [previous article](/p/node-stream-and-buffer) which talks about various methods from stream. <br/>
-Stream a video can help us speed up the waiting process which will naturally improves the user experience as well. However, it might having some downsides if we didn't manage it properly. <br/>
-
+If you not sure how stream and buffer works. Make sure you checkout my [previous article](/p/stream-buffer) which talks about various methods from stream. <br/>
+Stream a video can help us speed up the waiting process which will naturally improves the user experience as well<br/>
 First of all, let's start a simple express server in port 3000 which will serve the index.html file.<br/>
 
 *index.html*
@@ -26,9 +25,9 @@ First of all, let's start a simple express server in port 3000 which will serve 
     <title>Video Streaming App</title>
     <style>
         body{
-            margin: 40px auto;
-            max-width: 650px;
-            background-color: azure;
+            margin: 50px auto;
+            max-width: 800px;
+            background-color: rgb(56, 255, 255);
             font-family: sans-serif;
         }
     </style>
@@ -77,18 +76,11 @@ app.get("/video", (req, res) => {
     const end = Math.min(videoSize - 1, start + CHUNK_SIZE);
     const contentLength = end - start + 1;
     const header = {
-        //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range
-        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-
-        //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
-        //What type we send back
+        "Content-Range": `bytes ${start}-${end}/${videoSize}`,        
         "Accept-Range": "bytes",
-
-        "Content-Length": contentLength, // How many byte we are send back
+        "Content-Length": contentLength,
         "Content-Type": "video/mp4",
     };
-
-    //Status 206 = sending partial content. Means the response is not yet finished
     res.writeHead(206, header)
     const readStream = fs.createReadStream(videoPath, { start, end });
     readStream.pipe(res)
@@ -99,11 +91,22 @@ app.listen(PORT, () => { console.log(`Server is Running at PORT ${PORT}`) })
 {{< /highlight >}}
 
 ### Result
-Kindly open the url http://localhost:3000 and open Developer tool(F12) -> Network Tab -> Filter by Media
-
+Kindly open the url `http://localhost:3000` and open `Developer tool(F12)` -> `Network Tab` -> `Filter by Media`
 
 <video controls autoplay style="max-width:100%">
     <source src="video-stream.mp4" type="video/mp4">
     <source src="video-stream.ogg" type="video/ogg">
-    </video>
-</div>
+</video>
+
+### Explanation
+1. As we can see from the video, when we jump to certain time frame of the video, it will immediately load a chunk of stream from the server to ensure the video can be play smoothly.
+2. First of all, we need to get the value from [Range HTTP Request Header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range) so that we know what is the playing time of the video.
+    - Example of range header: `bytes=4065540-`
+3. Define the video path , size and total chunk size of the document to be loaded and response to client later. This article uses 1MB for the chunk size
+4. There are several headers we need to define before we response back to the client 
+   - [Content-Range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range): indicates where in a full body message a partial message belongs
+   - [Accept-Range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges): allow us to resume an interrupted download, rather than to start it from the start again. 
+   - Content-Length: size of message body (bytes) we are send back to client
+   - Content-Type: MIME type of the response
+4. Response with the status code 206 which indicates it's partially content
+5. Create a readable stream and read the file by providing the video path, start and end point. In the meantime, we can response back to the client with writable stream by using `pipe()` method
