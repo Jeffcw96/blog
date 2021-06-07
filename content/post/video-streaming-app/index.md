@@ -1,14 +1,15 @@
 +++
 author = "Jeff Chang"
-title= "Video Streaming" 
-date= "2021-05-28"
-description= "Last article, we have gone through how to how to read and write the file into a stream. In this article, we are going to build a simple video streaming app." 
+title= "Video Streaming with Node Js" 
+date= "2021-05-29"
+description= "Last article, we have gone through how to how to read and write the file into a stream. In this article, we are going to build a simple video streaming app with Node Js" 
 tags = [
     "nodejs", "javascript"
 ]
 categories = [
 	"NodeJs", "Javascript"
 ]
+image = "cover.jpg"
 +++
 If you not sure how stream and buffer works. Make sure you checkout my [previous article](/p/stream-buffer) which talks about various methods from stream. <br/>
 Stream a video can help us speed up the waiting process which will naturally improves the user experience as well<br/>
