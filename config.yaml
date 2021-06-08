@@ -31,7 +31,7 @@ params:
         secondSubtitle: ❝Life is best filled by learning as much as you can❞
         avatar:
             local: true
-            src: img/avatar.png
+            src: img/Picture1.png
 
     article:
         math: false
