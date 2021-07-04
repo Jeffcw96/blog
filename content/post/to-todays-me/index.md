@@ -4,7 +4,7 @@ title= "To today's me (2021)"
 date= "2021-06-08"
 description= "It has been a year since I started my software engineer career in March 2020. Until today, I'm still feeling very grateful to do something I love." 
 tags = [
-    "Non-technical"
+    "Non-technical","Life Sharing"
 ]
 categories = [
     "Non-technical"
