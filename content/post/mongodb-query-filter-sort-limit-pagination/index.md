@@ -14,9 +14,10 @@ image = "cover.jpg"
 
 First and foremost, before we get started, kindly ensure you have installed MongoDB Driver and imported the mongoose module in your local program.
 
-Besides that, the data going to be used will be at [here](/p/1-mongodb-query-of-advanced-filtering-sorting-limit-field-and-pagination-with-mongoose/tours.json). <br/>
 And this will be the Model of the data
+Besides that, the data going to be used will be at [tours.json](/p/1-mongodb-query-of-advanced-filtering-sorting-limit-field-and-pagination-with-mongoose/tours.json). <br/>
 
+#### Schema<a name="tour-schema"></a>
 {{< highlight js >}}
 const mongoose = require('mongoose')
 const tourSchema = new mongoose.Schema({
