@@ -1,0 +1,65 @@
+[
+    {
+        "_id": "6173e5fe7fc8622cbc56a108",
+        "name": "Jeff",
+        "age": 20,
+        "ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+        "__v": 0,
+        "expenses_categories": [
+            {
+                "_id": "6173e6577fc8622cbc56a10c",
+                "label": "Food",
+                "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                "ref_id": "7a27b0d0-33ed-11ec-aac1-dd97bcc28a8a",
+                "__v": 0,
+                "expenses": [
+                    {
+                        "_id": "6173e7677fc8622cbc56a116",
+                        "label": "Mc Donald",
+                        "value": 11.5,
+                        "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "expenses_category_ref_id": "7a27b0d0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "ref_id": "1cacea50-33ee-11ec-aac1-dd97bcc28a8a",
+                        "__v": 0
+                    },
+                    {
+                        "_id": "6173e7767fc8622cbc56a118",
+                        "label": "KFC",
+                        "value": 15,
+                        "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "expenses_category_ref_id": "7a27b0d0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "ref_id": "25358420-33ee-11ec-aac1-dd97bcc28a8a",
+                        "__v": 0
+                    },
+                    {
+                        "_id": "6173e78a7fc8622cbc56a11a",
+                        "label": "Sushi King",
+                        "value": 35,
+                        "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "expenses_category_ref_id": "7a27b0d0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "ref_id": "312787b0-33ee-11ec-aac1-dd97bcc28a8a",
+                        "__v": 0
+                    }
+                ]
+            },
+            {
+                "_id": "6173e6677fc8622cbc56a10e",
+                "label": "Entertainment",
+                "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                "ref_id": "84021f00-33ed-11ec-aac1-dd97bcc28a8a",
+                "__v": 0,
+                "expenses": [
+                    {
+                        "_id": "6173e7e07fc8622cbc56a11c",
+                        "label": "karaoke",
+                        "value": 45,
+                        "user_ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+                        "expenses_category_ref_id": "84021f00-33ed-11ec-aac1-dd97bcc28a8a",
+                        "ref_id": "649c2330-33ee-11ec-aac1-dd97bcc28a8a",
+                        "__v": 0
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,41 @@
+[
+    {
+        "name": "Jeff",
+        "age": 20,
+        "ref_id": "457935c0-33ed-11ec-aac1-dd97bcc28a8a",
+        "expenses_categories": [
+            {
+                "label": "Food",
+                "ref_id": "7a27b0d0-33ed-11ec-aac1-dd97bcc28a8a",
+                "expenses": [
+                    {
+                        "label": "Mc Donald",
+                        "value": 11.5,
+                        "ref_id": "1cacea50-33ee-11ec-aac1-dd97bcc28a8a"
+                    },
+                    {
+                        "label": "KFC",
+                        "value": 15,
+                        "ref_id": "25358420-33ee-11ec-aac1-dd97bcc28a8a"
+                    },
+                    {
+                        "label": "Sushi King",
+                        "value": 35,
+                        "ref_id": "312787b0-33ee-11ec-aac1-dd97bcc28a8a"
+                    }
+                ]
+            },
+            {
+                "label": "Entertainment",
+                "ref_id": "84021f00-33ed-11ec-aac1-dd97bcc28a8a",
+                "expenses": [
+                    {
+                        "label": "karaoke",
+                        "value": 45,
+                        "ref_id": "649c2330-33ee-11ec-aac1-dd97bcc28a8a"
+                    }
+                ]
+            }
+        ]
+    }
+]
