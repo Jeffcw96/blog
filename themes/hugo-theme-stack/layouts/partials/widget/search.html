@@ -1,0 +1,18 @@
+<form action="/search" class="search-form widget" {{ with .OutputFormats.Get "json" -}}data-json="{{ .Permalink }}" {{- end }}>
+    <p>
+        <label>{{ T "searchTitle" }}</label>
+        <input name="keyword" required placeholder="{{ T `searchPlaceholder` }}" id="searchKeyword"/>
+    
+        <button title="Search" id="searchBtn">
+            {{ partial "helper/icon" "search" }}
+        </button>
+    </p>
+</form>
+
+<script>
+    document.getElementById("searchBtn").addEventListener("click",(e) =>{
+        e.preventDefault();
+        const keyword = document.getElementById("searchKeyword").value;
+        location.href = "/search/?keyword="+keyword;
+    })
+</script>
