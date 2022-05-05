@@ -9,6 +9,7 @@ tags = [
 categories = [
     "NodeJs","Javascript","RabbitMQ"
 ]
+image = "cover.jpg"
 +++
 
 Prerequisite:
