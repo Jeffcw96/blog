@@ -31,31 +31,32 @@ We will run `producer.js` and `comsumer.js` separately.
 <!-- prettier-ignore -->
 {{< highlight js>}}
 const amqp = require("amqplib");
-async function fanoutExchange(){
-    try{
-        const rabbitmqUrl = "amqp://localhost:5672";
-        const connection = await amqp.connect(rabbitmqUrl);
-        const exchange = "transports";
-        const exchangeType = "fanout";
-        const routingKey = "";
-        const options = {};
-        const payload = {
-            vehicleType: "car",
-            numberOfPassenger: 3,
-        };
-        let channel = await connection.createChannel();
-        await channel.assertExchange(exchange, exchangeType, options);
-        channel.publish(
-            exchange,
-            routingKey,
-            Buffer.from(JSON.stringify(payload)),
-            options
-        );
-    }catch(error){
-        console.error(error)
-    }
+async function fanoutExchange() {
+  try {
+    const rabbitmqUrl = "amqp://localhost:5672";
+    const connection = await amqp.connect(rabbitmqUrl);
+    const exchange = "jobs";
+    const exchangeType = "direct";
+    const routingKey = "software_engineer";
+    const options = {};
+    const payload = {
+      Name: "Jeff",
+      yearOfExperience: 2,
+    };
+    let channel = await connection.createChannel();
+    await channel.assertExchange(exchange, exchangeType, options);
+    channel.publish(
+      exchange,
+      routingKey,
+      Buffer.from(JSON.stringify(payload)),
+      options
+    );
+  } catch (error) {
+    console.error(error);
+  }
 }
-fanoutExchange()
+fanoutExchange();
+
 {{< /highlight >}}
 
 ### consumer.js<a name="consumer-code"></a>
@@ -63,33 +64,34 @@ fanoutExchange()
 <!-- prettier-ignore -->
 {{< highlight js>}}
 const amqp = require("amqplib");
-async function fanoutExchangeConsumer(){
-    try{
-        const rabbitmqUrl = "amqp://localhost:5672";
-        const connection = await amqp.connect(rabbitmqUrl);
-        const exchange = "transports";
-        const exchangeType = "fanout";
-        const routingKey = "";
-        const options = {};
-        let channel = await connection.createChannel();
-        await channel.assertExchange(exchange, exchangeType, options);
-        const { queue } = await channel.assertQueue("", options);
-        channel.bindQueue(queue, exchange, routingKey);
-        channel.consume(queue, (data) => {
-            console.log("Received", JSON.parse(data.content.toString()));
-            channel.ack(data, false, true);
-        });
-    }catch(error){
-        console.error(error)
-    }
+async function fanoutExchangeConsumer() {
+  try {
+    const rabbitmqUrl = "amqp://localhost:5672";
+    const connection = await amqp.connect(rabbitmqUrl);
+    const exchange = "jobs";
+    const exchangeType = "direct";
+    const routingKey = process.argv[2];
+    const options = {};
+    let channel = await connection.createChannel();
+    await channel.assertExchange(exchange, exchangeType, options);
+    const { queue } = await channel.assertQueue("", options);
+    channel.bindQueue(queue, exchange, routingKey);
+    channel.consume(queue, (data) => {
+      console.log("Received", JSON.parse(data.content.toString()));
+      channel.ack(data, false, true);
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
-fanoutExchangeConsumer()
+fanoutExchangeConsumer();
 {{< /highlight >}}
 
 **Before we start:**
 
 - To have better visualization, please run the `producer.js` in 1 terminal and `consumer.js` in 2 terminals. You can either use the [split terminal in Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal#_grouping) or run the files in your machine terminals.
-- If you're not using the example from the provide [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminal followed by running `producer.js` in 1 terminal
+- If you're not using the example from the provide [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminal followed by running `producer.js` in 1 terminal and indicate your `routing_key` value when running the `consumer.js` script eg: `node consumer.js software_engineer`.
+  - example here uses `process.argv[2]` to retrive the value from the command line and assign as `routing_key`
 
 ### Result for this example
 
@@ -120,12 +122,12 @@ fanoutExchangeConsumer()
   1. Before process started, we need to first connect to the RabbitMQ.
   2. The next step is make connection with the channel and start creating our desire exchange by using `assertExchange()` method
      - In here we specify the following arguments value:
-       - exchange name which is `transports` in this example
-       - exchange type which is `fanout`
+       - exchange name which is `jobs` in this example
+       - exchange type which is `direct`
        - we didn't specify the options in this example but feel free to have a look on the availabe options at [here](https://amqp-node.github.io/amqplib/channel_api.html#channelassertexchange)
   3. And now, we can start publishing our message to the exchange by using [`publish()`](https://amqp-node.github.io/amqplib/channel_api.html#channel_publish) method with the following arguments:
-     - we can use back the exchange name we specified earlier **'transports'**
-     - `routingKey`, we could just left it as empty as it doesn't apply anything for `fanout` exchange type
+     - we can use back the exchange name we specified earlier **'jobs'**
+     - `routingKey` in this case played an important property as in the consumer binding queue process, the broker would need to refer this value and bind to the corresponding queue.
      - `payload`, Publish message only accepts **buffer** payload. To achieve this, we can first **stringify** our payload if it's an object and convert it into a Buffer by using [`Buffer.from`](https://www.w3schools.com/nodejs/met_buffer_from.asp)
      - `options`, we didn't specify the options in this example but feel free to have a look on the availabe options at [here](https://amqp-node.github.io/amqplib/channel_api.html#channel_publish)
 
@@ -133,8 +135,8 @@ fanoutExchangeConsumer()
   1. Before process started, we need to first connect to the RabbitMQ.
   2. The next step is make connection with the channel and start creating our desire exchange by using `assertExchange()` method
      - In here we specify the following arguments value:
-       - exchange name which is `transports` in this example
-       - exchange type which is `fanout`
+       - exchange name which is `jobs` in this example
+       - exchange type which is `direct`
        - we didn't specify the options in this example but feel free to have a look on the availabe options at [here](https://amqp-node.github.io/amqplib/channel_api.html#channelassertexchange)
   3. And now we can start create our queue and bind with the exchange we created earlier.
      - As you can observer from the code, we actually putting it as empty string when creating the queue `channel.assertQueue("",options)`. This is because we do not need to bother the queue name when binding the exchange and queue. By putting empty string for the queue name, it will actually return us a unique and random queue name such as `amq.gen-JzTY20BRgKO-HjmUJj0wLg`
@@ -143,7 +145,6 @@ fanoutExchangeConsumer()
        - `exclusive` : if true, queue will be deleted when connection is closed.
        - `expires` : specifiy the time in millisecond to delete the queue when there is no consumer connecting to the queue.
        - checkout other options [here](https://amqp-node.github.io/amqplib/channel_api.html#channelassertqueue)
-       - We could just left the `routing key` as empty for the binding between exchange and queue because it does not apply anything for the `fanout` exchange.
-       - Check out the `direct`, `topic` exchange for the use case of `routing key`
+       - `routingKey` property is very important for `direct` exchange as it will refer the message properties sent from the producer and bind the exchange with it's queue if their `routingKey` value is matched.
   4. After the binding process is finished, we can now consume the message whenever there is a incoming message from the broker by using [`.consume()`](https://amqp-node.github.io/amqplib/channel_api.html#channel_consume) method
   5. When we received the message, we can now **acknowledge** the message by using [`ack()`](https://amqp-node.github.io/amqplib/channel_api.html#channel_ack) method so that the broker will knows we successfully retrive the message.
