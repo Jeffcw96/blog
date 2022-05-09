@@ -32,7 +32,7 @@ We will run `producer.js` and `comsumer.js` separately.
 <!-- prettier-ignore -->
 {{< highlight js>}}
 const amqp = require("amqplib");
-async function fanoutExchange() {
+async function directExchange() {
   try {
     const rabbitmqUrl = "amqp://localhost:5672";
     const connection = await amqp.connect(rabbitmqUrl);
@@ -56,7 +56,7 @@ async function fanoutExchange() {
     console.error(error);
   }
 }
-fanoutExchange();
+directExchange();
 
 {{< /highlight >}}
 
@@ -65,7 +65,7 @@ fanoutExchange();
 <!-- prettier-ignore -->
 {{< highlight js>}}
 const amqp = require("amqplib");
-async function fanoutExchangeConsumer() {
+async function directExchangeConsumer() {
   try {
     const rabbitmqUrl = "amqp://localhost:5672";
     const connection = await amqp.connect(rabbitmqUrl);
@@ -85,7 +85,7 @@ async function fanoutExchangeConsumer() {
     console.error(error);
   }
 }
-fanoutExchangeConsumer();
+directExchangeConsumer();
 {{< /highlight >}}
 
 **Before we start:**
@@ -106,8 +106,22 @@ fanoutExchangeConsumer();
 - Open a new terminal
 - `npm run dev` to start the server
 - Open **2** new terminals and run the following command:
-  - `npm run consumer process=exchange exchange=transports exchangeType=fanout routingKey=''`
-- Make a POST request to `http://localhost:3000/api/transports/exchange/fanout` with your custom payload.
+  - `npm run consumer`
+- Specify your `routing_key` as shown in below:
+
+  ```
+    {
+      "payload":{
+          "name": "Jeff",
+          "yearOfExperience": 2,
+      },
+      "properties":{
+          "routing_key":"software_engineer"
+      }
+    }
+  ```
+
+- Make a POST request to `http://localhost:3000/api/direct/exchange/jobs` with your custom payload.
 
 ### Result
 

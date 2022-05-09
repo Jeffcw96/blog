@@ -104,8 +104,8 @@ fanoutExchangeConsumer()
 - Open a new terminal
 - `npm run dev` to start the server
 - Open **2** new terminals and run the following command:
-  - `npm run consumer process=exchange exchange=transports exchangeType=fanout routingKey=''`
-- Make a POST request to `http://localhost:3000/api/transports/exchange/fanout` with your custom payload.
+  - `npm run consumer`
+- Make a POST request to `http://localhost:3000/api/fanout/exchange/transports` with your custom payload.
 
 ### Result
 
