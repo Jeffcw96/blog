@@ -9,8 +9,10 @@ tags = [
 categories = [
     "GO",
 ]
+image="cover.jpg"
 metakeywords = "Golang, Server"
 codeMaxLines = 1
+
 +++
 
 Firstly, we need to import the [Gorilla Mux package](https://github.com/gorilla/mux) into our web application and initialize our server router.
