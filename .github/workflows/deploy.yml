@@ -1,13 +1,7 @@
-# This is a basic workflow to help you get started with Actions
-
 name: deployment
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [master]
-  pull_request:
     branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -15,17 +9,14 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repositiory
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
@@ -37,11 +28,19 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      # Runs a set of commands using the runners shell
       - name: Build
         run: hugo --minify
 
-      - name: Deploy
-        run: aws s3 sync ./public s3://testjeffdevslife
+      - name: Deploy to S3
+        run: aws s3 sync ./public s3://${{ secrets.BUCKET_NAME }}
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
