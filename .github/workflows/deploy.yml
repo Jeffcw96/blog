@@ -43,6 +43,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built_dir
+          path: public
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
