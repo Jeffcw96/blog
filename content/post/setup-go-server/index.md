@@ -9,7 +9,7 @@ tags = [
 categories = [
     "GO",
 ]
-image="cover.jpg"
+image = "cover.jpg"
 metakeywords = "Golang, Server"
 codeMaxLines = 1
 
