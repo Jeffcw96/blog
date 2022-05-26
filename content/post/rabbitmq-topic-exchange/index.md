@@ -2,7 +2,7 @@
 author = "Jeff Chang"
 title= "RabbitMQ topic exchange" 
 date= "2022-05-25"
-description= "In the last 2 articles, we have explained 2 types of exchange in RabbitMQ which are direct and fanout exchange. They are pretty cool as with direct exchange, you are able to personalize your exchange and publish the message as long as the routing key is matched. Whereas for fanout exchange, it behaves like a pub/sub mechanism where you get to publish your message to every consumer as long as their queue is bound to the exchange. In this article, we will be introducing another exchange type called topic exchange" 
+description= "In the last 2 articles, we have explained 2 types of exchange in RabbitMQ which are direct and fanout exchange.<br><br>They are pretty cool as with direct exchange, you are able to personalize your exchange and publish the message as long as the routing key is matched. Whereas for fanout exchange, it behaves like a pub/sub mechanism where you get to publish your message to every consumer as long as their queue is bound to the exchange.<br><br>In this article, we will be introducing another exchange type called topic exchange and this exchange type is very useful as it allows you to attach with certain rules in your routing key so that it will filter out and only publish to the matching rule queue." 
 tags = [
     "nodejs","javascript","rabbitmq"
 ]
@@ -11,8 +11,6 @@ categories = [
 ]
 image = "cover.jpg"
 +++
-
-Topic exchange is very useful as it allows you to attach with certain rules in your routing key so that it will filter out and only publish to the matching rule queue.
 
 Prerequisite:
 
