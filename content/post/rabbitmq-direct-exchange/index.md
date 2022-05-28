@@ -25,9 +25,9 @@ We are going to demonstrate the `Direct exchange` message queue flow as shown in
 
 ## Code demonstration
 
-We will run `producer.js` and `comsumer.js` separately.
+We will run `publisher.js` and `comsumer.js` separately.
 
-### producer.js<a name="producer-code"></a>
+### publisher.js<a name="publisher-code"></a>
 
 <!-- prettier-ignore -->
 {{< highlight js>}}
@@ -90,9 +90,11 @@ directExchangeConsumer();
 
 **Before we start:**
 
-- To have better visualization, please run the `producer.js` in 1 terminal and `consumer.js` in 2 terminals. You can either use the [split terminal in Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal#_grouping) or run the files in your machine terminals.
-- If you're not using the example from the provided [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminals followed by running `producer.js` in 1 terminal and indicate your `routing_key` value when running the `consumer.js` script e.g : `node consumer.js software_engineer`.
-  - example here uses `process.argv[2]` to retrieve the value from the command line and assign it as `routing_key`
+- To have better visualization, please run the `publisher.js` in 1 terminal and `consumer.js` in 2 terminals. You can either use the [split terminal in Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal#_grouping) or run the files in your machine terminals.
+- If you're not using the example from the provided [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminals followed by running `publisher.js` in 1 terminal and indicate your `routing_key` value when running the `consumer.js` script. The following are the arguments used in example below:
+  - `node consumer software_engineer`
+  - `node consumer ui_designer`
+  - `node publisher`
 
 ### Result for this example
 
@@ -109,7 +111,7 @@ directExchangeConsumer();
   - `npm run consumer`
 - Specify your `routing_key` as shown in below:
 
-  ```
+  ```js
     {
       "payload":{
           "name": "Jeff",
@@ -121,7 +123,8 @@ directExchangeConsumer();
     }
   ```
 
-- Make a POST request to `http://localhost:3000/api/direct/exchange/jobs` with your custom payload.
+- Make a POST request to `http://localhost:3000/api/direct/exchange/jobs` with the payload above.
+- **Note :** If you wanted to add your new custom data such as `routing_key`, `exchange name` and etc, please ensure you have read the instructions in [ReadMe](https://github.com/Jeffcw96/rabbit-mq#how-to-use)
 
 ### Result
 
@@ -132,7 +135,7 @@ directExchangeConsumer();
 
 ## Explanations
 
-- **Producer**
+- **Publisher**
 
   1. Before process started, we need to first connect to the RabbitMQ.
   2. The next step is to make a connection with the channel and start creating our desired exchange by using `assertExchange()` method
@@ -160,6 +163,6 @@ directExchangeConsumer();
        - `exclusive` : if true, queue will be deleted when the connection is closed.
        - `expires` : specify the time in a millisecond to delete the queue when there is no consumer connecting to the queue.
        - checkout other options [here](https://amqp-node.github.io/amqplib/channel_api.html#channelassertqueue)
-       - `routingKey` property is very important for `direct` exchange as it will refer to the message properties sent from the producer and bind the exchange with its queue if their `routingKey` value is matched.
+       - `routingKey` property is very important for `direct` exchange as it will refer to the message properties sent from the publisher and bind the exchange with its queue if their `routingKey` value is matched.
   4. After the binding process is finished, we can now consume the message whenever there is an incoming message from the broker by using [`.consume()`](https://amqp-node.github.io/amqplib/channel_api.html#channel_consume) method
   5. When we received the message, we can now **acknowledge** the message by using [`ack()`](https://amqp-node.github.io/amqplib/channel_api.html#channel_ack) method so that the broker will know we successfully retrieve the message.

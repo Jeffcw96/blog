@@ -32,9 +32,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: built_dir
-          path: public
-  
-  deploy: 
+          path: public #every files inside this dir will be uploaded
+
+  deploy:
     needs: build
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built_dir
-          path: public
+          path: public #download all files from artifact folder into a folder called public
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
