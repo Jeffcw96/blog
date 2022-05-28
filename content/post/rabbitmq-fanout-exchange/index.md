@@ -25,9 +25,9 @@ We are going to demonstrate the `Fanout exchange` message queue flow as shown in
 
 ## Code demonstration
 
-We will run `producer.js` and `comsumer.js` separately.
+We will run `publisher.js` and `comsumer.js` separately.
 
-### producer.js<a name="producer-code"></a>
+### publisher.js<a name="publisher-code"></a>
 
 <!-- prettier-ignore -->
 {{< highlight js>}}
@@ -89,8 +89,8 @@ fanoutExchangeConsumer()
 
 **Before we start:**
 
-- To have better visualization, please run the `producer.js` in 1 terminal and `consumer.js` in 2 terminals. You can either use the [split terminal in Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal#_grouping) or run the files in your machine terminals.
-- If you're not using the example from the provided [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminals followed by running `producer.js` in 1 terminal
+- To have better visualization, please run the `publisher.js` in 1 terminal and `consumer.js` in 2 terminals. You can either use the [split terminal in Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal#_grouping) or run the files in your machine terminals.
+- If you're not using the example from the provided [Git Repository](https://github.com/Jeffcw96/rabbit-mq). Please ensure you run the `consumer.js` in 2 terminals followed by running `publisher.js` in 1 terminal
 
 ### Result for this example
 
@@ -116,7 +116,7 @@ fanoutExchangeConsumer()
 
 ## Explanations
 
-- **Producer**
+- **Publisher**
 
   1. Before the process started, we need to first connect to the RabbitMQ.
   2. The next step is to make connection with the channel and start creating our desired exchange by using `assertExchange()` method
