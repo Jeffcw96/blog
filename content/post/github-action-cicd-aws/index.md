@@ -209,6 +209,7 @@ with:
 - Checkout their documentation from [marketplace](https://github.com/marketplace/actions/hugo-setup) or [github readme](https://github.com/peaceiris/actions-hugo) for available options
 - `hugo --minify` command will then build and generate static file from my HUGO application
 - And finally we could used the built file and upload to AWS S3 bucket by providing the right credentials
+- And now once you push or merge the changes to **master** branch, it will trigger the workflow and start the process. You could also view the workflow by navigating to the **Actions** tab of the repository
 
 **TIPS**
 The tips here is not memorizing the step but understanding the entire process. You could imagine or think this process as the following:
