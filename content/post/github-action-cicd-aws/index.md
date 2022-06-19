@@ -1,14 +1,15 @@
 +++
 author = "Jeff Chang"
 title = "Automate your deployment with Github Action CI/CD and AWS"
-date = "2022-06-18"
-description = "In this article, we will be going through step by step on how to automate the deployment on AWS S3 static site hosting with Github action"
+date = "2022-06-19"
+description = "In this article, we will be going through step by step on how to automate the deployment on AWS S3 static site hosting with Github action and HUGO"
 tags = [
     "devops"
 ]
 categories = [
 	"DevOps"
 ]
+image = "cover.png"
 +++
 
 ## Table of contents
@@ -17,6 +18,7 @@ categories = [
 - [Create IAM role in AWS](#aws-iam)
 - [Attach credentials in Github repository](#github-credentials)
 - [Configure Github workflows](#github-workflows)
+  - [Workflow example for React and Vue application](#node-workflow-example)
 
 ## Create AWS S3 bucket for website hosting<a name="aws-s3-static-website-hosting"></a>
 
@@ -138,3 +140,118 @@ And now we could:
 <div style="max-width:80%; margin:0 auto">
     <img src="github_credentials.png" alt="Github credentials" />
 </div>
+
+## Configure Github workflows<a name="github-workflows"></a>
+
+Finally, we have reach our last step, which is to create and configure our github workflow. The very first step is to create a `.yml` file under your project directory **.github/workflows/YOUR_FILE_NAME.yml**.
+
+In this article, I'm using [HUGO](https://gohugo.io/) for building my static website. However, it applies the same concept if you are using other modern frontend framework such as React, Vue and etc. It's just some of the GitHub action plugins and commands will be different.
+
+```yml
+name: deployment
+
+on:
+  push:
+    branches: [master]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out repositiory
+      - uses: actions/checkout@v3
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.89.4"
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: aws s3 sync ./YOUR-BUILD-DIR s3://${{ secrets.BUCKET_NAME }}
+```
+
+### Explainations
+
+- `name`: It's optional and it will appear in the Actions tab of the GitHub repository
+- `on`: This is the workflow event and allow you to trigger the **jobs** when it fulfilled the condition. In this article, we are configuring `push` event and specify it as **master** branch. In the sense of it will trigger the **job** below when the **master** branch of the repository has changed. We could also specify other event like trigger when **pull request** is created. For more info, see [here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore)
+- `job`: We can group multiple steps into 1 job and configure the **jobs** to run in sequentially or parallelly
+- `build`: This label is custimizable and will be shown up on the jobs dashboard.
+- `runs-on`: Configure the job to run in which virtual environment. Refer [here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on) for the list of environments
+- `steps`: Groups together all the steps that run in the **build** job.
+- `uses: actions/checkout@v3`: The `uses` keyword specifies that this step will run v3 of the `actions/checkout` action. This action will checkout your current repository
+
+```yml
+name: Setup Hugo
+uses: peaceiris/actions-hugo@v2
+with:
+  hugo-version: "0.89.4"
+  extended: true
+```
+
+- `name`: Label of the step
+- Checkout their documentation from [marketplace](https://github.com/marketplace/actions/hugo-setup) or [github readme](https://github.com/peaceiris/actions-hugo) for available options
+- `hugo --minify` command will then build and generate static file from my HUGO application
+- And finally we could used the built file and upload to AWS S3 bucket by providing the right credentials
+
+**TIPS**
+The tips here is not memorizing the step but understanding the entire process. You could imagine or think this process as the following:
+
+1. Checkout our current repository
+2. Build the static file
+3. Upload to S3 bucket
+
+The idea is we need to understand what we want to do, then we could based on that and start looking for the relevant [GitHub marketplace plugins](https://github.com/marketplace?type=actions) to achieve the automation
+
+### Workflow example for React and Vue application<a name="node-workflow-example"></a>
+
+```yml
+name: deployment
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: aws s3 sync ./YOUR-BUILD-DIR s3://YOUR-BUCKET-NAME
+```
