@@ -15,8 +15,8 @@ categories = [
 
 - [Introduction](#introduction)
 - [Schema and Types](#schema-type)
-- [Create your own Type and Query](#create-type-and-query)
-- [Create Mutations](#mutations)
+- [Query](#query)
+- [Mutations](#mutations)
 - [Link multiple query type](#link-types)
 - [Final outcome](#final-outcome)
 
@@ -61,3 +61,89 @@ The exclamation mark right beside of the scalar type is stands for **non-nullabl
 For the `friends` field, it's a little special as it's an **Array** type. `[User!]` scalar type means the field will now contains whatever we have specified for the `User` type. It also means it's a **nullable** field **BUT** when it also means it cannot be a empty array
 
 Checkout the [official docs](https://graphql.org/learn/schema/) if you are keen to learn more
+
+### Query
+
+There is query ready in our starter pack. Let's play around with that by typing our query in the GraphQL editor.
+
+![get users query](get-users-query.jpg)
+
+```graphql
+...
+query GetUsers{
+  users {
+    id
+    name
+  }
+}
+```
+
+We will first need to name our query, in this case we named it as `GetUsers` and it's totally customizable and up to your own preference. Then inside the bracket, it's gonna we what query type we are referring too. If you look at the Query type in the `type-def.js` file, the starter pack code has already provided an example to return a list of users. Inside the query type, instead of returning every fields provided by the query which normally what we seen for REST API. We could actually specify what are fields to be returned in our query. In this case, we only want the `id` and `name` to be returned in our query
+
+GraphQL also smart enough to automatically create a documentation based on whatever we have defined in our Query and Mutation by explaining what fields are available in every Query and Mutation
+
+![graphql documentation](graphql-documentation.jpg)
+
+Before we actually create our own query resolver, we would need to definite it's type in the `type-def.js` file. What are we going to do next is to create a resolver that return a specific user by ID.
+
+```graphql
+...
+
+const typeDefs = gql`
+  type Query {
+    users: [User!]!
+    user(id: ID!): User!
+  }
+
+  ...
+`;
+```
+
+Since our new resolver query is to return a specific user by ID. We would then need the id as the input parameter and the return type will be an User.
+We can navigate to `resolver.js` file and create our resolver for this query type.
+
+```graphql
+const { Users } = require("../data");
+
+const resolvers = {
+  Query: {
+    users: () => {
+      return Users;
+    },
+    user: (_parent, args) => {
+      const id = args.id;
+      return Users.find((user) => Number(user.id) === Number(id));
+    },
+  },
+};
+
+module.exports = { resolvers };
+
+```
+
+#### Outcome
+
+We could use the following query in our GraphQL editor
+
+```graphql
+query GetUser {
+  user(id: "1") {
+    id
+    nationality
+  }
+}
+```
+
+However, there is a better way to structure the query by introducing the id variable:
+
+```graphql
+query GetUser($id: ID!) {
+  user(id: $id) {
+    id
+    nationality
+  }
+}
+```
+
+And we could specify the value of `$id` variable:
+![graphql variable](variable.jpg)
