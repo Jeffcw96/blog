@@ -1,7 +1,7 @@
 +++
 author = "Jeff Chang"
 title = "Understanding GraphQL Query and Mutation in Apollo Server"
-date = "2023-05-15"
+date = "2023-05-23"
 description = "In this article, we will be going through the fundamental of GraphQL in Apollo Server with NodeJs"
 tags = [
     "nodejs", "graphql"
@@ -9,6 +9,7 @@ tags = [
 categories = [
     "Node","Javascript", "GraphQL"
 ]
+image= "cover.png"
 +++
 
 ## Table of contents
@@ -18,7 +19,7 @@ categories = [
 - [Query](#query)
 - [Mutations](#mutations)
 - [Link multiple query type](#link-types)
-- [Final outcome](#final-outcome)
+- [Final source code](#conclusion)
 
 ### Introduction<a name="introduction"></a>
 
@@ -44,7 +45,7 @@ There are total of 5 scalar types available in GraphQL
 
 Here is one of the GraphQL example type in our Github repo:
 
-```graphql
+```typescript
 type User {
   id: ID!
   name: String!
@@ -62,13 +63,13 @@ For the `friends` field, it's a little special as it's an **Array** type. `[User
 
 Checkout the [official docs](https://graphql.org/learn/schema/) if you are keen to learn more
 
-### Query
+### Query<a name="query"></a>
 
 There is query ready in our starter pack. Let's play around with that by typing our query in the GraphQL editor.
 
 ![get users query](get-users-query.jpg)
 
-```graphql
+```typescript
 ...
 query GetUsers{
   users {
@@ -86,7 +87,7 @@ GraphQL also smart enough to automatically create a documentation based on whate
 
 Before we actually create our own query resolver, we would need to definite it's type in the `type-def.js` file. What are we going to do next is to create a resolver that return a specific user by ID.
 
-```graphql
+```typescript
 ...
 
 const typeDefs = gql`
@@ -102,7 +103,9 @@ const typeDefs = gql`
 Since our new resolver query is to return a specific user by ID. We would then need the id as the input parameter and the return type will be an User.
 We can navigate to `resolver.js` file and create our resolver for this query type.
 
-```graphql
+> Take note that we could access our resolve input variable from the second argument. eg: `args.id`
+
+```javascript
 const { Users } = require("../data");
 
 const resolvers = {
@@ -118,14 +121,13 @@ const resolvers = {
 };
 
 module.exports = { resolvers };
-
 ```
 
 #### Outcome
 
 We could use the following query in our GraphQL editor
 
-```graphql
+```typescript
 query GetUser {
   user(id: "1") {
     id
@@ -136,7 +138,7 @@ query GetUser {
 
 However, there is a better way to structure the query by introducing the id variable:
 
-```graphql
+```typescript
 query GetUser($id: ID!) {
   user(id: $id) {
     id
@@ -147,3 +149,184 @@ query GetUser($id: ID!) {
 
 And we could specify the value of `$id` variable:
 ![graphql variable](variable.jpg)
+
+### Mutation<a name="mutations"></a>
+
+We now understand how to query the data from GraphQL server. Let's create some Mutation to add in a new user. The concept is almost similar to what we have for the Query type where we first need to define the input and return type of the mutation.
+
+We can also create an [input type](https://graphql.org/graphql-js/mutations-and-input-types/) which hold the entities when we are creating a new user
+
+```ts
+...
+type Mutation {
+  createUser(input: CreateUserInput!): User
+}
+
+input CreateUserInput {
+  name: String!
+  age: Int!
+  nationality: String!
+}
+```
+
+_type-def.js_
+
+And now, we can then add in our logic for the resolver. Instead of wrapping the resolver under Query object, we should now wrap them into the Mutation object.
+
+Also take note that we can access ou
+
+```javascript
+const { Users } = require("../data");
+
+const resolvers = {
+  Query: {
+    users: () => {
+      return Users;
+    },
+    user: (_parent, args) => {
+      const id = args.id;
+      return Users.find((user) => Number(user.id) === Number(id));
+    },
+  },
+  Mutation: {
+    // The object key store in args will be depends on what we define in type-def. If we name it as input then it will be args.input
+    createUser: (_parent, args) => {
+      const id = Users[Users.length - 1].id + 1;
+      const user = {
+        ...args.input,
+        id,
+      };
+      Users.push(user);
+      return user;
+    },
+  },
+};
+
+module.exports = { resolvers };
+```
+
+_resolvers.js_
+
+#### Outcome
+
+<video controls muted style="width:100%">
+  <source src="mutation-outcome.mov" type="video/mp4">
+  <source src="mutation-outcome.ogg" type="video/ogg">
+</video>
+
+#### Explaination
+
+As you can see, it's pretty much same with what we did for the Query and we just have to change the `Query` systax to `Mutation` and fill in the value under the variable panel.
+
+```typescript
+mutation CreateUser($input: CreateUserInput! ){
+  createUser(input: $input) {
+    name,
+    nationality,
+    id
+  }
+}
+```
+
+### Link multiple Query type<a name="link-types"></a>
+
+Let's say we have 2 different type called `User` and `Sport`. The data from `User` does not containing any data from `Sport` and vice versa. How can we join them by creating a custom field in the type?
+
+{{< highlight js  "linenos=false,hl_lines=19 22-27">}}
+const { gql } = require("apollo-server");
+
+const typeDefs = gql`
+  type Query {
+    users: [User!]!
+    user(id: ID!): User!
+  }
+
+  type Mutation {
+    createUser(input: CreateUserInput!): User
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    age: Int!
+    nationality: String!
+    friends: [User!]
+    favouriteSports: [Sport!]
+  }
+
+  type Sport {
+    id: ID!
+    name: String!
+    minimumPlayers: Int!
+    maximumPlayers: Int!
+  }
+
+  input CreateUserInput {
+    name: String!
+    age: Int!
+    nationality: String!
+  }
+`;
+
+module.exports = {
+  typeDefs,
+};
+{{< /highlight >}}
+
+_type-def.js_
+
+As you can see we have defined a new type called `Sport` as well as we have introduce a new field called `favouriteSports` which will return an array of `Sport` type. Instead of manually adding the `Sport` data into `User`, GraphQL actually allow us to create a custom type resolver, in this case will be `User`.
+
+You should be able to import another constant data called `Sports` that are storing in the same location with `Users`
+
+{{< highlight js  "linenos=false,hl_lines=13-18">}}
+const { Users, Sports } = require("../data");
+
+const resolvers = {
+  Query: {
+    users: () => {
+      return Users;
+    },
+    user: (_parent, args) => {
+      const id = args.id;
+      return Users.find((user) => Number(user.id) === Number(id));
+    },
+  },
+  User: {
+    favouriteSports: () =>
+      Sports.filter(
+        (sport) => sport.minimumPlayers >= 2 && sport.maximumPlayers <= 4
+      ),
+  },
+  Mutation: {
+    createUser: (_parent, args) => {
+      const id = Users[Users.length - 1].id + 1;
+      const user = {
+        ...args.input,
+        id,
+      };
+      Users.push(user);
+      return user;
+    },
+  },
+};
+
+module.exports = { resolvers };
+{{< /highlight >}}
+
+_resolvers.js_
+
+#### Outcome
+
+<video controls muted style="width:100%">
+  <source src="linked-type-query.mov" type="video/mp4">
+  <source src="linked-type-query.ogg" type="video/ogg">
+</video>
+
+#### Explaination
+
+We are able to retrieve the **Badminton**, **Ping Pong** and **Squash** in every returned user data because they are fulfilling the logic we defined in the `favouriteSports` resolver.
+
+### Conclusion<a name="conclusion"></a>
+
+The final source code is available in the [Github final folder](https://github.com/Jeffcw96/graphlq-learning-journey/tree/master/final). Feel free to playaround and there will be more and more episode coming in for GraphQL topics.
