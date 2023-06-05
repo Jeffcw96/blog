@@ -23,7 +23,7 @@ image= "cover.png"
 
 ### Introduction<a name="introduction"></a>
 
-Before we get started, it's high recommend to clone the [Github repo](https://github.com/Jeffcw96/graphlq-learning-journey) and we can follow along with the article contents.
+Before we get started, it's high recommend to clone the [Github repo](https://github.com/Jeffcw96/graphlq-learning-journey/tree/master/01-apollo-graphql-server) and we can follow along with the article contents.
 
 The first step after we downloaded the repo is to checkout the the **starter** folder and run `npm install` and `npm run start` to start our Apollo GraphQL server locally.
 
