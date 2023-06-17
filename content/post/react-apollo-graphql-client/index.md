@@ -1,7 +1,7 @@
 +++
 author = "Jeff Chang"
 title = "Connect GraphQL query and mutation in React Apollo Client"
-date = "2023-06-13"
+date = "2023-06-17"
 description = "In this article, we will be implementing Apollo Client GraphQL and connect to it's server"
 tags = [
     "react", "graphql"
@@ -9,6 +9,7 @@ tags = [
 categories = [
     "React","Javascript", "GraphQL"
 ]
+image= "cover.jpg"
 +++
 
 ## Table of contents
@@ -18,6 +19,8 @@ categories = [
     - [Objective](#introduction-objective)
 - [Initial configurations](#initial-configurations)
 - [useQuery hook](#useQuery)
+- [useMutation hook](#useMutation)
+- [Result](#result)
 
 
 ### Introduction<a name="introduction"></a>
@@ -42,7 +45,7 @@ We can now navigate to http://localhost:5137/ and here is how the React applicat
 ![React application UI](react-application.png)
 
 #### Objective<a name="introduction-objective"></a>
-As you can see from the image above, we have multiple inputs available in the UI which is representing each attribute of our [USER type](https://jeffdevslife.com/p/understanding-graphql-query-and-mutation-in-apollo-server/#schema-type) defined in last tutorial except the `friends` attribute.
+As you can see from the image above, we have multiple inputs available in the UI which is representing each attribute of our [USER type](https://jeffdevslife.com/p/understanding-graphql-query-and-mutation-in-apollo-server/#schema-type) defined in last tutorial except the `friends` field.
 
 The objective of this tutorial is to connect the following GraphQL query and mutation from this React application into your GraphQL local server.
 - CREATE USER
@@ -82,7 +85,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 3. Then we wrap our React application under the Apollo Context provider to ensure it could access in everywhere of our application.
 
 
-### useQuery
+### useQuery<a name="useQuery"></a>
 Before we start connecting the `users` query from the React App, it's important that we have define our query which is the similar syntax and command we used under the GraphQL editor in **<YOUR_GRAPHQL_SERVER_URL>/graphql**
 
 We could write our GraphQL query command under the ***operations/user.js*** directory with the aid of imported `gql` function from `@apollo/client` package.
@@ -107,7 +110,7 @@ We utilized the `gql` function to wrap our GraphQL query command which first req
 #### Execute GraphQL query with `useQuery` function
 Let's navigate to the ***App.jsx*** file and work with the `useQuery` function.
 
-> There is nothing you would need to deal with the `react-hook-form` package.
+> There is **nothing** you would need to deal with the `react-hook-form` package.
 
 
 {{< highlight react  "linenos=false,hl_lines=23-27 32-37">}}
@@ -160,7 +163,7 @@ function App() {
 export default App;
 {{< /highlight >}}
 
-**IMPORTANT**: Please uncomment the highlighted code above from your end.
+### **IMPORTANT**: Please uncomment the highlighted code above from your end.
 
 #### Explaination
 1. We first imported the `useQuery` hook from `@apollo/client` package and the GraphQL command variable called `GET_USERS` that we have defined earler.
@@ -169,4 +172,110 @@ export default App;
 
 ![useQuery response](useQuery-result.png)
 
+### useMutation<a name="useMutation"></a>
+Since we are now able to retrieve the list of users from our GraphQL server. Let's connect the other resolvers such as **Create User** and **Update User** with the useMutation hook.
 
+We could write our GraphQL query command under the ***operations/user.js*** directory with the aid of imported `gql` function from `@apollo/client` package.
+
+```js
+import { gql } from "@apollo/client";
+
+...
+
+export const CREATE_USER = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      name
+      age
+      nationality
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      name
+      age
+      nationality
+    }
+  }
+`;
+
+```
+#### Explaination
+We utilized the `gql` function to wrap our `createUser` and `updateUser` resolvers into it's respective mutation and assigned into a variable.
+Take note that these mutations are required us to pass in the payload. We can refer back to the defined [schema type](https://github.com/Jeffcw96/graphlq-learning-journey/blob/master/01-apollo-graphql-server/final/schema/type-defs.js#L9-L12) of our input from GraphQL backend as following:
+
+```
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): [User!]
+}
+```
+
+#### Execute GraphQL mutations with `useMutation` function
+Let's navigate to the ***App.jsx*** file and work with the `useMutation` function.
+
+> Data access to each inputs have been completed. We can access each of the input's value under `data` argument from `onSubmit` function .
+
+{{< highlight react  "linenos=true,hl_lines=20-32">}}
+...
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_USER, GET_USERS, UPDATE_USER } from "./operations/user";
+
+function App() {
+  ...
+  const [responseData, setResponseData] = useState({});
+  const [users, setUsers] = useState([]);
+  const { data, refetch } = useQuery(GET_USERS);
+  const [createUser] = useMutation(CREATE_USER);
+  const [updateUser] = useMutation(UPDATE_USER);
+
+  const onSubmit = async (data) => {
+    const payload = {
+      name: data.name,
+      age: Number(data.age),
+      nationality: data.nationality,
+    };
+
+    try {
+      if (data.id) {
+        payload.id = data.id;
+        const result = await updateUser({ variables: { input: payload } });
+        setResponseData(result);
+        return;
+      }
+
+      const result = await createUser({ variables: { input: payload } });
+      setResponseData(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        ...
+      </form>
+    </>
+  );
+}
+export default App;
+{{< /highlight >}}
+
+#### Explaination
+1. We first initialize the `useMutation` hooks by passing in the GraphQL command variable called `CREATE_USER` and `UPDATE_USER` that we have defined earler. It will then return a list of result back in an Array form but in this tutorial, we only care about the first element which is the function that will execute the GraphQL mutation.
+2. From code line 21 to 26 is the place where we verify if the any user has been selected from the User dropdown input where the given payload will be come along with their unique id. Then we will perform an update user action.
+3. Otherwise, we will perform a create user action if the user id is not specified.
+4. **Note**: Please ensure to pass in the correct payload otherwise, we will be getting a GraphQL error.
+  - We would need to pass in our payload into the specified mutation variable and wrap under the `variables` object. In this example, we have defined our Mutation input as `$input`, so the format will be `({variables: {input: <PAYLOAD_OBJECT>}})`
+
+### Result<a name="result"></a>
+<video controls muted style="width:100%">
+  <source src="result.mov" type="video/mp4">
+  <source src="result.ogg" type="video/ogg">
+</video>
