@@ -28,6 +28,8 @@ The first step after we downloaded the repo is to checkout the the **starter** f
 
 ### Objective<a name="objective"></a>
 
+Below are the directory of our start pack in this tutorial, where each modules have been organized in a different folder.
+
 - **03\-graphql\-server\-typescript**
   - **data**
     - **final**
@@ -49,8 +51,6 @@ The first step after we downloaded the repo is to checkout the the **starter** f
   - [tsconfig.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/tsconfig.json)
   - [package\-lock.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/package-lock.json)
   - [package.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/package.json)
-
-As you can see from the top are the directory of our start pack in this tutorial, which has been organized according to each resolver types.
 
 Our goal in this tutorial are:
 
