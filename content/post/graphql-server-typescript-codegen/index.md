@@ -22,7 +22,7 @@ image= "cover.jpg"
 
 ### Introduction<a name="introduction"></a>
 
-Before we get started, it's high recommend to clone the [Github repo](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript) and we can follow along with the article contents.
+Before we get started, it's high recommend to clone the [Github repo](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen) and we can follow along with the article contents.
 
 The first step after we downloaded the repo is to checkout the the **starter** folder and run `npm install` to install the necessary dependencies
 
@@ -33,28 +33,28 @@ Below are the directory of our start pack in this tutorial, where each modules h
 - **03\-graphql\-server\-typescript**
   - **data**
     - **final**
-      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/data/final/index.ts)
+      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/data/final/index.ts)
     - **initial**
-      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/data/initial/index.ts)
-  - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/index.ts)
+      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/data/initial/index.ts)
+  - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/index.ts)
   - **modules**
-    - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/index.ts)
+    - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/index.ts)
     - **sport**
-      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/sport/index.ts)
-      - [resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/sport/resolvers.ts)
-      - [type\-def.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/sport/type-def.ts)
+      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/sport/index.ts)
+      - [resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/sport/resolvers.ts)
+      - [type\-def.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/sport/type-def.ts)
     - **user**
-      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/user/index.ts)
-      - [resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/user/resolvers.ts)
-      - [type\-def.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/user/type-def.ts)
-  - [schema.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/schema.ts)
-  - [tsconfig.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/tsconfig.json)
-  - [package\-lock.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/package-lock.json)
-  - [package.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/package.json)
+      - [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/user/index.ts)
+      - [resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/user/resolvers.ts)
+      - [type\-def.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/user/type-def.ts)
+  - [schema.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/schema.ts)
+  - [tsconfig.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/tsconfig.json)
+  - [package\-lock.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/package-lock.json)
+  - [package.json](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/package.json)
 
 Our goal in this tutorial are:
 
-- Merge each of the resolvers and type-defs into [modules/index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/index.ts) file
+- Merge each of the resolvers and type-defs into [modules/index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/index.ts) file
 - Generate the type for the resolvers to ensure it is type safe.
 
 ### Organize resolvers and type-def<a name="organize-file"></a>
@@ -68,7 +68,7 @@ We would need install a few dependency to help us speed up the process, which ar
 Here is the command snippet you can copy to install these dependencies:
 `npm install @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-resolvers -D`
 
-Once these packages are ready, we could then proceed to merge our GraphQL resolvers and type-defs under [modules/index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/index.ts) file
+Once these packages are ready, we could then proceed to merge our GraphQL resolvers and type-defs under [modules/index.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/index.ts) file
 
 ```ts
 import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
@@ -90,7 +90,7 @@ export const schema = makeExecutableSchema({
 });
 ```
 
-Then we could specified our `schema` into our GraphQL server under the [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/blob/master/03-graphql-server-typescript/starter/src/index.ts) file.
+Then we could specified our `schema` into our GraphQL server under the [index.ts](https://github.com/Jeffcw96/graphql-learning-journey/blob/master/03-graphql-server-typescript-codegen/starter/src/index.ts) file.
 
 ```ts
 import { ApolloServer } from "apollo-server";
@@ -147,7 +147,7 @@ We could also update our `package.json` file to include the code generator comma
 
 #### Explaination
 
-1. We first need to specify the location of our entire `typeDefs` of each module which is stored under the [schema.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/schema.ts) file.
+1. We first need to specify the location of our entire `typeDefs` of each module which is stored under the [schema.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/schema.ts) file.
 2. Adding dependencies into the `require` field is to make sure GraphQL codegen actually picks up these dependencies when generating the types. In this case, this is to avoid the Typescript path alias and `import` keyword issue.
    - Adding `ts-node` is for make sure it doesn't get import issue when referring src/schema.ts as it's the same directory level of graphql server (index.ts)
    - Adding `tsconfig-paths/register` to make sure the graphql-codegen doesn't get path alias error when refering the src/modules/\*/resolvers files
@@ -159,7 +159,7 @@ We could also update our `package.json` file to include the code generator comma
 Once the `codegen` command has been run successfully, you should able to see there is a file called `schema.d.ts` generated under the `modules` directory.
 We could then assign the resolver type in each of the modules. For example:
 
-[modules/sport/resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/sport/resolvers.ts):
+[modules/sport/resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/sport/resolvers.ts):
 
 ```ts
 import { Sports } from 'src/data/initial';
@@ -176,7 +176,7 @@ export const resolvers:Resolvers = {
 
 ```
 
-[modules/user/resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript/starter/src/modules/user/resolvers.ts):
+[modules/user/resolvers.ts](https://github.com/Jeffcw96/graphql-learning-journey/tree/master/03-graphql-server-typescript-codegen/starter/src/modules/user/resolvers.ts):
 
 ```ts
 import { Users } from 'src/data/initial';
